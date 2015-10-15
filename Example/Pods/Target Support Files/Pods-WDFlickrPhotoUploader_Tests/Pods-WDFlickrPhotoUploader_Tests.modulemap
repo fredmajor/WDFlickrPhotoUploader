@@ -1,0 +1,6 @@
+framework module Pods_WDFlickrPhotoUploader_Tests {
+  umbrella header "Pods-WDFlickrPhotoUploader_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

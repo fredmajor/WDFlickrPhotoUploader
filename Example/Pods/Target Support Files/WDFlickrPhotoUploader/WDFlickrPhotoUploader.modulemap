@@ -1,0 +1,6 @@
+framework module WDFlickrPhotoUploader {
+  umbrella header "WDFlickrPhotoUploader-umbrella.h"
+
+  export *
+  module * { export * }
+}

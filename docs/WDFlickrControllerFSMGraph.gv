@@ -1,0 +1,66 @@
+digraph FlickrControllerLogin {
+    rankdir=LR;
+    size="8";
+
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		fetchingOauthRequestToken -> userInBrowser [label="req token arrived"];
+		userInBrowser -> fetchingOauthAccessToken [label="got callback from flickr"];
+		label = "loginInProgress";
+	}
+
+	Init [shape=Mdiamond];
+    Init[group="m"];
+	fetchingOauthRequestToken[group="m"];
+	fetchingOauthAccessToken[group="right"];
+	LoggedIn[group="right"];
+	TestingLogin[group="right"];
+
+	Init -> fetchingOauthRequestToken [label = "C(logIn)", weight=100];
+	fetchingOauthAccessToken -> LoggedIn [label = "access token arrived", weight=10];
+
+	//Errors
+	edge[style=dotted];
+	fetchingOauthRequestToken ->LoginError;
+	fetchingOauthRequestToken ->LoginTimeout;
+	userInBrowser -> LoginError;
+	userInBrowser -> LoginTimeout;
+	fetchingOauthAccessToken -> LoginError[weight=100];
+	fetchingOauthAccessToken -> LoginTimeout[weight=100];
+	Init -> LoginError;
+	LoginError -> Init [label="C(resetErrors)"];
+	LoginTimeout -> Init [label="C(resetErrors)"];
+
+	//{rank = same; LoginTimeout, LoginError;}
+	//LoginTimeout[group="err"];
+	//LoginError[group="err"];
+
+    edge[style=normal];
+	LoggedIn -> TestingLogin[weight=0,label="C(testLogin)"];
+	TestingLogin -> LoggedIn[weight=0, label="isLoggedIn"];
+	TestingLogin -> Init[weight=0, label="loginInvalid"];
+
+	LoggedIn -> Init [label="C(logOut)"];
+	Init -> ManualLogin[label="C(manualLogIn)"];
+    ManualLogin -> TestingLogin;
+
+	LoggedIn -> PhotoUpload[label="C(uploadPhoto)"];
+	PhotoUpload -> LoggedIn[label="success, delegate(uploaded)"];
+	PhotoUpload -> TestingLogin[label="error, delegate(error)"];
+	PhotoUpload -> PhotoUpload[label="delegate(progress)"]
+
+	LoggedIn -> CheckPhotoset[label="C(checkPhotosetExists)"];
+	CheckPhotoset -> LoggedIn[label="success"];
+	CheckPhotoset -> TestingLogin[label="error"];
+
+    LoggedIn -> CreatePhotoset[label="C(createPhotoset)"];
+    CreatePhotoset -> LoggedIn[label="success"];
+    CreatePhotoset -> TestingLogin[label="error"];
+
+    LoggedIn -> AssignPhoto[label="C(assignPhoto)"];
+    AssignPhoto -> LoggedIn[label="success"];
+    AssignPhoto -> TestingLogin[label="error"];
+
+}

@@ -1,0 +1,26 @@
+PODS:
+  - Expecta (1.0.3)
+  - objectiveflickr (2.0.4)
+  - OCMock (3.2)
+  - Specta (1.0.4)
+  - WDFlickrPhotoUploader (0.1.0):
+    - objectiveflickr
+
+DEPENDENCIES:
+  - Expecta
+  - OCMock
+  - Specta
+  - WDFlickrPhotoUploader (from `../`)
+
+EXTERNAL SOURCES:
+  WDFlickrPhotoUploader:
+    :path: ../
+
+SPEC CHECKSUMS:
+  Expecta: 9d1bff6c8b0eeee73a166a2ee898892478927a15
+  objectiveflickr: aed169dae1eb5a5550ca78f7efd7ccde2e4c26e5
+  OCMock: 28def049ef47f996b515a8eeea958be7ccab2dbb
+  Specta: 69bb134672aae190a1379ff91df07dad8dd1f869
+  WDFlickrPhotoUploader: 435007c69fabb52dda9ec1cb4c22dd1dcc987bae
+
+COCOAPODS: 0.39.0.beta.3

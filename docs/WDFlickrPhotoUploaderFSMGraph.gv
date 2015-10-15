@@ -1,0 +1,51 @@
+digraph FlickrControllerLogin {
+//rankdir=LR;
+size="8";
+
+Init [shape=doublecircle];
+isLoggedIn[shape="diamond"];
+Init -> isLoggedIn[label="C(startUpload)"];
+GetNextTask[label="GetNextTask\n---\ndataSource(next)"];
+isLoggedIn -> GetNextTask[label="Y"];
+isLoggedIn -> Error[label="N,\nerrorMsg=not logged in",style=dotted];
+
+isTaskNil[shape=diamond];
+GetNextTask -> isTaskNil[label="C(checkTask)"];
+Finished [shape=doubleoctagon,label="Finished\n---\ndelegate(finishedAll)"];
+Error[shape=doubleoctagon, label="Error\n----\ndelegate(error)"]
+isTaskNil -> Finished[label="Y"];
+isTaskNil -> UploadImage[label="N,\ndelegate(photoUploadStarted),\nuploadErrorCounter=0"];
+
+UploadImage -> UploadImage[label="delegate(progress)"];
+UploadImage -> UploadImage[label="if(error){repeat X times;\nuploadErrorCounter++}", style=dotted];
+checkUploadSuccessful[shape="diamond"];
+UploadImage -> checkUploadSuccessful[label="C(checkUploadResult)"];
+checkUploadSuccessful -> Error[label="N,\nerrorMsg=upload error", style=dotted];
+checkUploadSuccessful -> CheckIfPhotosetExists[label="Y"];
+
+photosetExistsOrNotDesision[shape="diamond"];
+photosetExistsSuccessfulDecision[shape="diamond"];
+CheckIfPhotosetExists -> photosetExistsSuccessfulDecision[label="C(checkPhotosetExistsSuccessful)"]
+CheckIfPhotosetExists -> CheckIfPhotosetExists[label="error, repeat X times", style=dotted];
+photosetExistsSuccessfulDecision -> Error[label="N,\nerrorMsg=photoset check error", style=dotted];
+photosetExistsSuccessfulDecision -> photosetExistsOrNotDesision[label="Y"]
+photosetExistsOrNotDesision -> CreatePhotoset[label="N"]
+photosetExistsOrNotDesision -> AssignPhoto[label="Y"]
+
+createPhotosetSuccessfulDecision[shape="diamond"]
+CreatePhotoset -> createPhotosetSuccessfulDecision[label="C(checkPhotosetCreation)"];
+CreatePhotoset -> CreatePhotoset[label="error, repeat X times", style=dotted];
+createPhotosetSuccessfulDecision -> Error[label="N,\nerrorMsg=create photoset error", style=dotted];
+createPhotosetSuccessfulDecision -> AssignPhoto[label="Y"]
+
+assignPhotoSuccessfulDecision[shape="diamond"]
+AssignPhoto -> AssignPhoto[label="error, repeat X times", style=dotted];
+AssignPhoto -> assignPhotoSuccessfulDecision[label="C(checkAssignmentSuccessful)"]
+assignPhotoSuccessfulDecision -> Error[label="N,\nerrorMsg=assign photo error", style="dotted"]
+assignPhotoSuccessfulDecision -> stopRequested[label="Y"]
+
+Stopped[shape=doubleoctagon]
+stopRequested[shape="diamond"]
+stopRequested -> GetNextTask[label="N"]
+stopRequested -> Stopped[label="Y"]
+}
