@@ -468,7 +468,8 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
         case WD_Flickr_UserInBrowserState:
         case WD_Flickr_fetchingOauthAccessTokenState: {
             [inRequest cancel];
-            [self WD_changeState:WD_Flickr_LoginErrorState withDescription:@"login error"];
+            NSString *msg = [NSString stringWithFormat:@"Login error. Reason: %@", inError];
+            [self WD_changeState:WD_Flickr_LoginErrorState withDescription:msg];
         }
         break;
         case WD_Flickr_TestingLoginState: {
@@ -476,7 +477,8 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
                 loginTestResult          = NO;
                 loginTestResponseArrived = YES;
             }
-            [self WD_changeState:WD_Flickr_InitState withDescription:@"login test failed"];
+            NSString *msg = [NSString stringWithFormat:@"Login test failed. Reason: %@", inError];
+            [self WD_changeState:WD_Flickr_InitState withDescription:msg];
         }
         break;
         case WD_Flickr_PhotoUploadState: {
@@ -600,27 +602,62 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
     DDLogDebug(@"FlickrController did post a notification=%@ on main thread.", aNotification);
 }
 
-- (void)WD_changeState:(WDFlickrState)aState withDescription:(NSString *)aDesc optionalInfo:(NSDictionary *)aInfo {
-    WDFlickrState oldState = _controllerState;
-    _controllerState = aState;
-    DDLogInfo(@"Changing state from %ld to %ld because:%@", oldState, aState, aDesc);
-    [self WD_PostStateChangeNotificationOnMainThread:aState fromState:oldState optionalInfo:aInfo];
-}
-
 - (void)WD_changeState:(WDFlickrState)aState withDescription:(NSString *)aDesc {
     [self WD_changeState:aState withDescription:aDesc optionalInfo:nil];
 }
 
+- (void)WD_changeState:(WDFlickrState)aState withDescription:(NSString *)aDesc optionalInfo:(NSDictionary *)aInfo {
+    WDFlickrState oldState = _controllerState;
+    _controllerState = aState;
+    [self WD_PostStateChangeNotificationOnMainThread:aState fromState:oldState optionalInfo:aInfo description:aDesc];
+}
+
 - (void)WD_PostStateChangeNotificationOnMainThread:(WDFlickrState)aNewState
                                          fromState:(WDFlickrState)aOldState
-                                      optionalInfo:(NSDictionary *)aUserInfo {
+                                      optionalInfo:(NSDictionary *)aUserInfo
+                                       description:(NSString *)aDesc {
+    DDLogInfo(@"Changing state from %ld to %ld because:%@", aOldState, aNewState, aDesc);
     NSMutableDictionary *finalUserInfo = [NSMutableDictionary dictionary];
     finalUserInfo[@"oldState"] = @(aOldState);
     finalUserInfo[@"newState"] = @(aNewState);
+    finalUserInfo[@"reason"]   = aDesc;
     if (aUserInfo) {
         [finalUserInfo addEntriesFromDictionary:aUserInfo];
     }
     [self WD_PostNotificationOnMainThread:WD_Flickr_StateChanged userInfo:finalUserInfo];
+}
+
++ (NSString *)controllerStateToString:(WDFlickrState)aControllerState {
+    switch (aControllerState) {
+        case WD_Flickr_InitState:
+            return @"WD_Flickr_InitState";
+        case WD_Flickr_FetchingOauthRequestTokenState:
+            return @"WD_Flickr_FetchingOauthRequestTokenState";
+        case WD_Flickr_UserInBrowserState:
+            return @"WD_Flickr_UserInBrowserState";
+        case WD_Flickr_fetchingOauthAccessTokenState:
+            return @"WD_Flickr_fetchingOauthAccessTokenState";
+        case WD_Flickr_LoggedInState:
+            return @"WD_Flickr_LoggedInState";
+        case WD_Flickr_TestingLoginState:
+            return @"WD_Flickr_TestingLoginState";
+        case WD_Flickr_LoginTimeoutState:
+            return @"WD_Flickr_LoginTimeoutState";
+        case WD_Flickr_LoginErrorState:
+            return @"WD_Flickr_LoginErrorState";
+        case WD_Flickr_PhotoUploadState:
+            return @"WD_Flickr_PhotoUploadState";
+        case WD_Flickr_CheckPhotosetExists:
+            return @"WD_Flickr_CheckPhotosetExists";
+        case WD_Flickr_ManualLogin:
+            return @"WD_Flickr_ManualLogin";
+        case WD_Flickr_CreatePhotoset:
+            return @"WD_Flickr_CreatePhotoset";
+        case WD_Flickr_AssignPhoto:
+            return @"WD_Flickr_AssignPhoto";
+        default:
+            return @"unknown state";
+    }
 }
 
 @end

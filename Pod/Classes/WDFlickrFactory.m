@@ -115,10 +115,11 @@ static NSTimeInterval loginTimeout;
 + (WDFlickrPhotoUploader *)getFlickrUploaderInstance {
     static WDFlickrPhotoUploader *flickrUploader;
     static dispatch_once_t fUploaderOnce;
+    static SMMonitorNSLog *smMonitor;
     dispatch_once(&fUploaderOnce, ^{
         SMStateMachineAsync *sm = [[SMStateMachineAsync alloc] init];
-        SMMonitorNSLog *machineMonitor = [[SMMonitorNSLog alloc] initWithSmName:@"Flickr monitor"];
-        sm.monitor = machineMonitor;
+        smMonitor = [[SMMonitorNSLog alloc] initWithSmName:@"Flickr monitor"];
+        sm.monitor = smMonitor;
         WDFlickrController *fController = [self getFlickrControllerInstance];
         flickrUploader = [WDFlickrPhotoUploader uploaderWithFlickrController:fController stateMachine:sm];
     });

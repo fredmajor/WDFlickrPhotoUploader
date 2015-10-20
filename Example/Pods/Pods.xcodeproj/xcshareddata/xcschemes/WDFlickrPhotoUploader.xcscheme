@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "121F2C124FB7C24EF64B93ED864D2FA1"
+               BlueprintIdentifier = "F8823EA2B1FB06663BE5C62CC9FB7D25"
                BlueprintName = "WDFlickrPhotoUploader"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "WDFlickrPhotoUploader.framework">

@@ -39,6 +39,7 @@ extern NSString *const WD_UFlickr_StoppedState;
 @property(nonatomic, copy) NSString *albumName;
 @property(nonatomic, copy) NSString *tags;
 @property(nonatomic, copy) NSDictionary *extraUploadOptions;
+@property(nonatomic, copy) NSString *state;
 @end
 
 #pragma mark - WDFlickrPhotoUploaderDelegate
