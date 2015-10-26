@@ -25,13 +25,14 @@
         </arrayController>
         <customObject id="Voe-Tx-rLC" customClass="AppDelegate">
             <connections>
+                <outlet property="allDoneTb" destination="157-ew-Wjp" id="217-cz-Cg3"/>
                 <outlet property="buddyImageView" destination="SU3-EO-WNm" id="gla-jN-ARu"/>
                 <outlet property="currentFileLabel" destination="lF2-Qg-bPc" id="0j1-v2-ge5"/>
                 <outlet property="dataUploadTImeTb" destination="4st-my-RQ6" id="nVa-TE-rn4"/>
-                <outlet property="extraActionsTimeTb" destination="Xk9-BA-uun" id="r42-dS-Ecs"/>
                 <outlet property="logTv" destination="2Va-X3-JsY" id="0Zd-Lb-6EI"/>
                 <outlet property="nsidTb" destination="vlK-zM-zpN" id="bww-62-3ga"/>
                 <outlet property="progressBar" destination="rMD-fJ-Och" id="gFu-md-cwI"/>
+                <outlet property="totalJobTimeTb" destination="Xk9-BA-uun" id="r42-dS-Ecs"/>
                 <outlet property="uploadTaskArrayController" destination="diz-Ru-j4u" id="AGg-za-fxA"/>
                 <outlet property="usernameTb" destination="CQk-MX-AsH" id="sbY-QM-G0u"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="gIp-Ho-8D9"/>
@@ -895,10 +896,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <size key="minSize" width="684" height="210"/>
+                                    <size key="minSize" width="669" height="210"/>
                                     <size key="maxSize" width="704" height="10000000"/>
                                     <color key="insertionPointColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="684" height="210"/>
+                                    <size key="minSize" width="669" height="210"/>
                                     <size key="maxSize" width="704" height="10000000"/>
                                 </textView>
                             </subviews>
@@ -915,7 +916,7 @@
                             <animations/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="Eau-KJ-QMM">
-                            <rect key="frame" x="669" y="1" width="16" height="210"/>
+                            <rect key="frame" x="670" y="1" width="15" height="210"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <animations/>
                         </scroller>
@@ -929,6 +930,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="resetControllerErrors:" target="Voe-Tx-rLC" id="k16-CT-2W4"/>
+                            <binding destination="Voe-Tx-rLC" name="enabled" keyPath="self.fControllerError" id="7HE-rC-kgn"/>
                             <binding destination="Voe-Tx-rLC" name="enabled2" keyPath="self.uploadInProgress" previousBinding="7HE-rC-kgn" id="iYD-Dp-JxL">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -938,7 +940,6 @@
                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
-                            <binding destination="Voe-Tx-rLC" name="enabled" keyPath="self.fControllerError" id="7HE-rC-kgn"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mWp-mY-YCB">
@@ -1001,6 +1002,7 @@ CA
                         </buttonCell>
                         <connections>
                             <action selector="remove:" target="diz-Ru-j4u" id="GwX-hi-6YH"/>
+                            <binding destination="diz-Ru-j4u" name="enabled" keyPath="canRemove" id="rAO-CG-FJO"/>
                             <binding destination="Voe-Tx-rLC" name="enabled2" keyPath="self.uploadInProgress" previousBinding="rAO-CG-FJO" id="87p-Es-Rg4">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
@@ -1010,7 +1012,6 @@ CA
                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
-                            <binding destination="diz-Ru-j4u" name="enabled" keyPath="canRemove" id="rAO-CG-FJO"/>
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Tef-Mj-Avq">
@@ -1058,17 +1059,17 @@ CA
                         </buttonCell>
                         <connections>
                             <action selector="resetUploaderState:" target="Voe-Tx-rLC" id="dHA-cS-nhN"/>
+                            <binding destination="Voe-Tx-rLC" name="enabled" keyPath="self.uploadInProgress" id="8w4-vM-lre">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                </dictionary>
+                            </binding>
                             <binding destination="Voe-Tx-rLC" name="enabled2" keyPath="self.uploaderInSomeFinalState" previousBinding="8w4-vM-lre" id="27G-Yu-BK0">
                                 <dictionary key="options">
                                     <integer key="NSMultipleValuesPlaceholder" value="-1"/>
                                     <integer key="NSNoSelectionPlaceholder" value="-1"/>
                                     <integer key="NSNotApplicablePlaceholder" value="-1"/>
                                     <integer key="NSNullPlaceholder" value="-1"/>
-                                </dictionary>
-                            </binding>
-                            <binding destination="Voe-Tx-rLC" name="enabled" keyPath="self.uploadInProgress" id="8w4-vM-lre">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">NSNegateBoolean</string>
                                 </dictionary>
                             </binding>
                         </connections>
@@ -1129,29 +1130,29 @@ CA
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bdv-e1-5Ro">
-                        <rect key="frame" x="264" y="255" width="203" height="17"/>
+                        <rect key="frame" x="328" y="255" width="139" height="17"/>
                         <animations/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Last file other flickr actions time:" id="GaJ-Kc-jiA">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Last file total job time:" id="GaJ-Kc-jiA">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4st-my-RQ6" userLabel="dataUploadTimeTb">
-                        <rect key="frame" x="471" y="280" width="37" height="17"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4st-my-RQ6" userLabel="dataUploadTimeTb">
+                        <rect key="frame" x="471" y="280" width="4" height="17"/>
                         <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="zq4-Wj-5db">
-                            <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" lenient="YES" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="aqU-25-fOs"/>
+                            <dateIntervalFormatter key="formatter" id="vRC-bS-Hta"/>
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xk9-BA-uun" userLabel="otherFActionsTb">
-                        <rect key="frame" x="471" y="255" width="37" height="17"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Xk9-BA-uun" userLabel="totalTimeTb">
+                        <rect key="frame" x="471" y="255" width="4" height="17"/>
                         <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" id="hHt-Hr-YmY">
-                            <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" lenient="YES" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="BZV-4A-YXJ"/>
+                            <dateIntervalFormatter key="formatter" id="87d-O9-8dI"/>
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -1162,6 +1163,15 @@ CA
                         <animations/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Last file data upload time:" id="05G-QZ-vvO">
                             <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="157-ew-Wjp">
+                        <rect key="frame" x="610" y="260" width="98" height="24"/>
+                        <animations/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="all done :)" placeholderString="" id="aAn-9Q-sbj">
+                            <font key="font" metaFont="systemBold" size="20"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -1193,6 +1203,7 @@ CA
                     <constraint firstItem="SU3-EO-WNm" firstAttribute="top" secondItem="EiT-Mj-1SZ" secondAttribute="top" constant="7" id="J5G-bv-jTm"/>
                     <constraint firstItem="Thc-8q-W3M" firstAttribute="leading" secondItem="pkU-bS-qja" secondAttribute="trailing" constant="12" id="JGs-7b-cLH"/>
                     <constraint firstItem="d3q-zZ-fue" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="JX3-4t-2kU"/>
+                    <constraint firstAttribute="trailing" secondItem="157-ew-Wjp" secondAttribute="trailing" constant="20" id="OxQ-mY-5Nl"/>
                     <constraint firstItem="zEF-eJ-f6W" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="Rr0-sP-MaV"/>
                     <constraint firstItem="4st-my-RQ6" firstAttribute="baseline" secondItem="zGK-Y5-oTf" secondAttribute="baseline" id="TCp-I1-5m1"/>
                     <constraint firstItem="Gu5-8y-5a7" firstAttribute="leading" secondItem="xtL-tm-7Yr" secondAttribute="trailing" constant="8" id="TNh-Q5-lIz"/>
@@ -1216,6 +1227,7 @@ CA
                     <constraint firstItem="pkU-bS-qja" firstAttribute="leading" secondItem="EiT-Mj-1SZ" secondAttribute="leading" constant="20" id="lYu-4M-uQD"/>
                     <constraint firstItem="xtL-tm-7Yr" firstAttribute="top" secondItem="Tef-Mj-Avq" secondAttribute="bottom" constant="8" id="lZE-5K-l0c"/>
                     <constraint firstItem="eQ8-j1-GZ9" firstAttribute="centerY" secondItem="4Cd-MK-IWL" secondAttribute="centerY" id="le6-vj-6TG"/>
+                    <constraint firstItem="157-ew-Wjp" firstAttribute="top" secondItem="lF2-Qg-bPc" secondAttribute="bottom" constant="21" id="me4-U1-XWW"/>
                     <constraint firstAttribute="trailing" secondItem="lF2-Qg-bPc" secondAttribute="trailing" constant="20" id="ofh-Jv-cZn"/>
                     <constraint firstItem="bdv-e1-5Ro" firstAttribute="trailing" secondItem="zGK-Y5-oTf" secondAttribute="trailing" id="pON-d3-VaC"/>
                     <constraint firstItem="mWp-mY-YCB" firstAttribute="leading" secondItem="eQ8-j1-GZ9" secondAttribute="trailing" constant="24" id="q39-ar-y9k"/>

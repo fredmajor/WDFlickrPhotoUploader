@@ -19,7 +19,8 @@
 @property (weak) IBOutlet NSTextField *currentFileLabel;
 @property (weak) IBOutlet NSProgressIndicator *progressBar;
 @property (weak) IBOutlet NSTextField *dataUploadTImeTb;
-@property (weak) IBOutlet NSTextField *extraActionsTimeTb;
+@property (weak) IBOutlet NSTextField *totalJobTimeTb;
+@property (weak) IBOutlet NSTextField *allDoneTb;
 
 @property (strong, nonatomic) NSMutableArray *uploadTasks;
 @property (nonatomic) BOOL loggedIn;

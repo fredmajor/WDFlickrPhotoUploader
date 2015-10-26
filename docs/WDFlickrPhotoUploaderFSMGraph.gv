@@ -5,16 +5,18 @@ size="8";
 Init [shape=doublecircle];
 isLoggedIn[shape="diamond"];
 Init -> isLoggedIn[label="C(startUpload)"];
-GetNextTask[label="GetNextTask\n---\ndataSource(next)"];
+GetNextTask[label="GetNextTask\n---\ndataSource(next)\nstart job stopwatch"];
 isLoggedIn -> GetNextTask[label="Y"];
 isLoggedIn -> Error[label="N,\nerrorMsg=not logged in",style=dotted];
 
 isTaskNil[shape=diamond];
 GetNextTask -> isTaskNil[label="C(checkTask)"];
 Finished [shape=doubleoctagon,label="Finished\n---\ndelegate(finishedAll)"];
+Finished -> Init [style=dotted, label="C(resetState)"]
 Error[shape=doubleoctagon, label="Error\n----\ndelegate(error)"]
+Error -> Init [style=dotted, label="C(resetState)"]
 isTaskNil -> Finished[label="Y"];
-isTaskNil -> UploadImage[label="N,\ndelegate(photoUploadStarted),\nuploadErrorCounter=0"];
+isTaskNil -> UploadImage[label="N,\ndelegate(photoUploadStarted),\nuploadErrorCounter=0\nstart data upload stopwatch"];
 
 UploadImage -> UploadImage[label="delegate(progress)"];
 UploadImage -> UploadImage[label="if(error){repeat X times;\nuploadErrorCounter++}", style=dotted];
@@ -29,6 +31,7 @@ CheckIfPhotosetExists -> photosetExistsSuccessfulDecision[label="C(checkPhotoset
 CheckIfPhotosetExists -> CheckIfPhotosetExists[label="error, repeat X times", style=dotted];
 photosetExistsSuccessfulDecision -> Error[label="N,\nerrorMsg=photoset check error", style=dotted];
 photosetExistsSuccessfulDecision -> photosetExistsOrNotDesision[label="Y"]
+CreatePhotoset[label="CreatePhotoset\n--\n(assigns photo automatically)"];
 photosetExistsOrNotDesision -> CreatePhotoset[label="N"]
 photosetExistsOrNotDesision -> AssignPhoto[label="Y"]
 
@@ -36,15 +39,17 @@ createPhotosetSuccessfulDecision[shape="diamond"]
 CreatePhotoset -> createPhotosetSuccessfulDecision[label="C(checkPhotosetCreation)"];
 CreatePhotoset -> CreatePhotoset[label="error, repeat X times", style=dotted];
 createPhotosetSuccessfulDecision -> Error[label="N,\nerrorMsg=create photoset error", style=dotted];
-createPhotosetSuccessfulDecision -> AssignPhoto[label="Y"]
+//createPhotosetSuccessfulDecision -> AssignPhoto[label="Y"]
+createPhotosetSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)"]
 
 assignPhotoSuccessfulDecision[shape="diamond"]
 AssignPhoto -> AssignPhoto[label="error, repeat X times", style=dotted];
 AssignPhoto -> assignPhotoSuccessfulDecision[label="C(checkAssignmentSuccessful)"]
 assignPhotoSuccessfulDecision -> Error[label="N,\nerrorMsg=assign photo error", style="dotted"]
-assignPhotoSuccessfulDecision -> stopRequested[label="Y"]
+assignPhotoSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)"]
 
 Stopped[shape=doubleoctagon]
+Stopped -> Init [style=dotted, label="C(resetState)"]
 stopRequested[shape="diamond"]
 stopRequested -> GetNextTask[label="N"]
 stopRequested -> Stopped[label="Y"]

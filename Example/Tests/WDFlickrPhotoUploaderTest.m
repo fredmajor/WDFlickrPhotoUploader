@@ -88,7 +88,7 @@
 - (void)     sender:(WDFlickrPhotoUploader *)aSender
 photoUploadFinished:(WDFlickrUploadTask *)aTask
      dataUploadTime:(NSTimeInterval)aUploadTime
-     additionalTime:(NSTimeInterval)aAdditionalTime{
+       totalJobTime:(NSTimeInterval)aTotalJobTime{
 
     WD_ASSERT_MT_TEST
     delegateUploadFinishedCalled = YES;

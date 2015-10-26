@@ -16,6 +16,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification{
 
+    self.allDoneTb.hidden = YES;
     [self WD_initFlickr];
     currentDatasourceIndex = 0;
 }
@@ -31,8 +32,8 @@
 
 - (void)WD_initFlickr{
 
-    [WDFlickrFactory setApiKey:@"--YOUR KEY---"];
-    [WDFlickrFactory setApiSecret:@"---YOUR SECRET---"];
+    [WDFlickrFactory setApiKey:@"--YOUR--KEY--"];
+    [WDFlickrFactory setApiSecret:@"--YOUR--SECRET--"];
     [WDFlickrFactory setCallbackUrlBase:@"flickrexample://callback"];
     fController = [WDFlickrFactory getFlickrControllerInstance];
     fPhotoUploader = [WDFlickrFactory getFlickrUploaderInstance];
@@ -110,14 +111,16 @@
 
 - (IBAction)startUpload:(id)sender{
     
-    self.uploadInProgress = YES;
+    self.allDoneTb.hidden = YES;
     [fPhotoUploader startUpload];
 }
 
 - (IBAction)stopUpload:(id)sender{
+    [fPhotoUploader stopUpload];
 }
 
 - (IBAction)resetUploaderState:(id)sender{
+    [fPhotoUploader resetState];
 }
 
 - (void)WD_flickrControllerNotificationHandler:(NSNotification *)aNote{
@@ -154,13 +157,18 @@
 
 - (WDFlickrUploadTask *)nextTask{
 
-    return self.uploadTasks[currentDatasourceIndex++];
+    if(currentDatasourceIndex < [self.uploadTasks count]){
+        return self.uploadTasks[currentDatasourceIndex++];
+    }else{
+        return nil;
+    }
 }
 
 #pragma mark - WDFlickrPhotoUploaderDelegate
 
 - (void)photoUploadStartsSender:(WDFlickrPhotoUploader *)aSender task:(WDFlickrUploadTask *)aTask{
 
+    self.uploadInProgress = YES;
     [self log:[NSString stringWithFormat:@"started upload of a file: %@", [aTask.fileURL absoluteString]]];
     self.currentFileLabel.stringValue = aTask.fileName;
 }
@@ -168,14 +176,14 @@
 - (void)     sender:(WDFlickrPhotoUploader *)aSender
 photoUploadFinished:(WDFlickrUploadTask *)aTask
      dataUploadTime:(NSTimeInterval)aUploadTime
-     additionalTime:(NSTimeInterval)aAdditionalTime{
+       totalJobTime:(NSTimeInterval)aTotalJobTime{
 
     [self log:[NSString stringWithFormat:@"finished upload of a file: %@. Data upload time:%.2f, additional flickr operations time:%.2f",
                                          [aTask.fileURL absoluteString],
                                          aUploadTime,
-                                         aAdditionalTime]];
-    self.dataUploadTImeTb.stringValue = [NSString stringWithFormat:@"%f", aUploadTime];
-    self.extraActionsTimeTb.stringValue = [NSString stringWithFormat:@"%f", aAdditionalTime];
+                                         aTotalJobTime]];
+    self.dataUploadTImeTb.stringValue = [NSString stringWithFormat:@"%.2f", aUploadTime];
+    self.totalJobTimeTb.stringValue = [NSString stringWithFormat:@"%.2f", aTotalJobTime];
 }
 
 - (void)progressUpdateSender:(WDFlickrPhotoUploader *)aSender
@@ -197,6 +205,7 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     
     [self log:@"all upload tasks finished."];
     self.uploadInProgress = NO;
+    self.allDoneTb.hidden = NO;
 }
 
 
@@ -204,6 +213,14 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 //state watching is currently implemented in a pretty ugly way
 - (void)didExecuteTransitionFrom:(SMState *)from to:(SMState *)to withEvent:(NSString *)event{
     self.currState = to.name;
+    if([to.name isEqualToString:WD_UFlickr_InitState]
+       || [to.name isEqualToString:WD_UFlickr_ErrorState]
+       || [to.name isEqualToString:WD_UFlickr_FinishedState]
+       || [to.name isEqualToString:WD_UFlickr_StoppedState]){
+        self.uploaderInSomeFinalState = YES;
+    }else{
+        self.uploaderInSomeFinalState = NO;
+    }
 }
 
 #pragma mark - Helpers

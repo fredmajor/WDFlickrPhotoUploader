@@ -52,7 +52,7 @@ extern NSString *const WD_UFlickr_StoppedState;
 - (void)     sender:(WDFlickrPhotoUploader *)aSender
 photoUploadFinished:(WDFlickrUploadTask *)aTask
      dataUploadTime:(NSTimeInterval)aUploadTime
-     additionalTime:(NSTimeInterval)aAdditionalTime;
+       totalJobTime:(NSTimeInterval)aTotalJobTime;
 
 - (void)progressUpdateSender:(WDFlickrPhotoUploader *)aSender
                    sentBytes:(NSUInteger)aSent
@@ -92,6 +92,8 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 - (void)startUpload;
 
 - (void)stopUpload;
+
+- (void)resetState;
 
 - (NSString *)getState;
 @end
