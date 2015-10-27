@@ -5,6 +5,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/WDFlickrPhotoUploader.svg?style=flat)](http://cocoapods.org/pods/WDFlickrPhotoUploader)
 
 This Pod makes it easier for you to:
+
 1. sign in to flickr
 2. upload a bunch of photos (or videos) and assign them to albums
 3. create an album (called also a photoset)
