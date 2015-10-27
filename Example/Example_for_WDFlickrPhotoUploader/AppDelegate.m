@@ -16,9 +16,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification{
 
+    currentDatasourceIndex = 0;
     self.allDoneTb.hidden = YES;
     [self WD_initFlickr];
-    currentDatasourceIndex = 0;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification{
@@ -110,17 +110,20 @@
 }
 
 - (IBAction)startUpload:(id)sender{
-    
+
     self.allDoneTb.hidden = YES;
     [fPhotoUploader startUpload];
 }
 
 - (IBAction)stopUpload:(id)sender{
+
     [fPhotoUploader stopUpload];
 }
 
 - (IBAction)resetUploaderState:(id)sender{
+
     [fPhotoUploader resetState];
+    currentDatasourceIndex = 0;
 }
 
 - (void)WD_flickrControllerNotificationHandler:(NSNotification *)aNote{
@@ -157,11 +160,14 @@
 
 - (WDFlickrUploadTask *)nextTask{
 
-    if(currentDatasourceIndex < [self.uploadTasks count]){
-        return self.uploadTasks[currentDatasourceIndex++];
-    }else{
-        return nil;
+    WDFlickrUploadTask *task;
+    while( currentDatasourceIndex < [self.uploadTasks count] && !task ){
+        WDFlickrUploadTask *currTask = self.uploadTasks[currentDatasourceIndex++];
+        if( currTask && (currTask.state == WD_FlickrTaskInitState || currTask.state == WD_FlickrTaskErrorState) ){
+            task = currTask;
+        }
     }
+    return task;
 }
 
 #pragma mark - WDFlickrPhotoUploaderDelegate
@@ -189,20 +195,20 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 - (void)progressUpdateSender:(WDFlickrPhotoUploader *)aSender
                    sentBytes:(NSUInteger)aSent
                   totalBytes:(NSUInteger)aTotal{
-    
+
     self.progressBar.doubleValue = aSent;
     self.progressBar.maxValue = aTotal;
     self.progressBar.minValue = 0;
 }
 
 - (void)errorSender:(WDFlickrPhotoUploader *)aSender error:(NSString *)aErrorDsc{
-    
+
     [self log:[NSString stringWithFormat:@"error during upload. msg=%@", aErrorDsc]];
     self.uploadInProgress = NO;
 }
 
 - (void)allTasksFinishedSender:(WDFlickrPhotoUploader *)aSender{
-    
+
     [self log:@"all upload tasks finished."];
     self.uploadInProgress = NO;
     self.allDoneTb.hidden = NO;
@@ -210,17 +216,25 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 
 
 #pragma mark - SMMonitorNSLogDelegate
+
 //state watching is currently implemented in a pretty ugly way
 - (void)didExecuteTransitionFrom:(SMState *)from to:(SMState *)to withEvent:(NSString *)event{
+
     self.currState = to.name;
-    if([to.name isEqualToString:WD_UFlickr_InitState]
-       || [to.name isEqualToString:WD_UFlickr_ErrorState]
-       || [to.name isEqualToString:WD_UFlickr_FinishedState]
-       || [to.name isEqualToString:WD_UFlickr_StoppedState]){
+    if( [to.name isEqualToString:WD_UFlickr_InitState] || [to.name isEqualToString:WD_UFlickr_ErrorState]
+        || [to.name isEqualToString:WD_UFlickr_FinishedState]
+        || [to.name isEqualToString:WD_UFlickr_StoppedState] ){
         self.uploaderInSomeFinalState = YES;
     }else{
         self.uploaderInSomeFinalState = NO;
     }
+}
+
+- (void)uploaderStopped:(WDFlickrPhotoUploader *)aSender{
+
+    self.uploaderInSomeFinalState = YES;
+    self.uploadInProgress = NO;
+    self.progressBar.doubleValue = 0;
 }
 
 #pragma mark - Helpers
@@ -253,8 +267,8 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 
     dispatch_async(dispatch_get_main_queue(), ^{
         NSAttributedString *attr = [[NSAttributedString alloc] initWithString:text];
-        [[self.logTv textStorage] appendAttributedString:attr];
-        [self.logTv scrollRangeToVisible:NSMakeRange([[self.logTv string] length], 0)];
+        [[self.logTb textStorage] appendAttributedString:attr];
+        [self.logTb scrollRangeToVisible:NSMakeRange([[self.logTb string] length], 0)];
     });
 }
 

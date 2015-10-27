@@ -56,7 +56,7 @@ extern NSString *const WD_Flickr_StateChanged;
 + (instancetype)controllerWithFlickrAPIContext:(OFFlickrAPIContext *)flickrAPIContext
                               flickrAPIRequest:(OFFlickrAPIRequest *)flickrAPIRequest;
 
-+ (NSString*)controllerStateToString:(WDFlickrState)aControllerState;
++ (NSString *)controllerStateToString:(WDFlickrState)aControllerState;
 
 - (void)logIn;
 

@@ -31,6 +31,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
         BOOL progressUpdate : 1;
         BOOL error : 1;
         BOOL allTasksFinished : 1;
+        BOOL stopped : 1;
     } _delegateHas;
 
     __block WDFlickrUploadTask *currentUploadTask;
@@ -48,7 +49,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
     NSString *errorMsg;
     NSString *currentPhotoId;
     NSString *currentPhotosetId;
-    
+
     NSTimeInterval dataUploadTime;
     NSTimeInterval singleJobTotalTime;
     NSDate *dataUploadStart;
@@ -64,6 +65,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
         _delegateHas.progressUpdate = [delegate respondsToSelector:@selector(progressUpdateSender:sentBytes:totalBytes:)];
         _delegateHas.error = [delegate respondsToSelector:@selector(errorSender:error:)];
         _delegateHas.allTasksFinished = [delegate respondsToSelector:@selector(allTasksFinishedSender:)];
+        _delegateHas.stopped = [delegate respondsToSelector:@selector(uploaderStopped:)];
     }
 }
 
@@ -178,6 +180,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 
     /* from assignPhotoSuccessful decision*/
     SMState *stoppedState = [_stateMachine createState:WD_UFlickr_StoppedState];
+    [stoppedState setEntrySelector:@selector(informDelegateOnStop)];
     SMDecision *assignPhotoSuccessfulDecision = [_stateMachine createDecision:WD_UFlickr_AssignPhotoSuccessfulDecision
                                                                withPredicateBoolBlock:^BOOL{
                                                                    return assignPhotoSuccessful;
@@ -204,7 +207,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
     [_stateMachine transitionFrom:finished to:init forEvent:@"C(resetState)"];
     [_stateMachine transitionFrom:stoppedState to:init forEvent:@"C(resetState)"];
     [_stateMachine transitionFrom:error to:init forEvent:@"C(resetState)"];
-    
+
     [_stateMachine validate];
     DDLogInfo(@"FSM validated.");
 }
@@ -243,6 +246,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 }
 
 - (void)resetStateCall{
+
     [_stateMachine postAsync:@"C(resetState)"];
 }
 
@@ -270,13 +274,25 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 - (void)informDelegateOnPhotoUploadCompleted{
 
     DDLogDebug(@"photo upload completed");
-    singleJobTotalTime = [[NSDate date]timeIntervalSinceDate:jobStart];
+    [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
+        currentUploadTask.state = WD_FlickrTaskFinishedState;
+    }];
+    singleJobTotalTime = [[NSDate date] timeIntervalSinceDate:jobStart];
     if( _delegateHas.photoUploadFinished ){
         [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
             [_delegate sender:weakSelf
                        photoUploadFinished:currentUploadTask
                        dataUploadTime:dataUploadTime
                        totalJobTime:singleJobTotalTime];
+        }];
+    }
+}
+
+- (void)informDelegateOnStop{
+
+    if( _delegateHas.stopped ){
+        [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
+            [_delegate uploaderStopped:weakSelf];
         }];
     }
 }
@@ -311,6 +327,9 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 - (void)informDelegateOnError{
 
     DDLogDebug(@"Will inform delegate on error if it listens.");
+    [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
+        currentUploadTask.state = WD_FlickrTaskErrorState;
+    }];
     if( _delegateHas.error ){
         [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
             [_delegate errorSender:weakSelf error:errorMsg];
@@ -323,6 +342,9 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 - (void)fromIsTaskNilToImageUpload{
 
     uploadErrorCounter = 0;
+    [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
+        currentUploadTask.state = WD_FlickrTaskInProgressState;
+    }];
     if( _delegateHas.photoUploadStarts ){
         [self callOnMainThread:^(WDFlickrPhotoUploader *weakSelf){
             [_delegate photoUploadStartsSender:weakSelf task:currentUploadTask];
@@ -437,7 +459,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 
     uploadSuccessful = YES;
     currentPhotoId = aPhotoId;
-    dataUploadTime = [[NSDate date]timeIntervalSinceDate:dataUploadStart];
+    dataUploadTime = [[NSDate date] timeIntervalSinceDate:dataUploadStart];
     [self moveToCheckUploadSuccessful];
 }
 
@@ -483,7 +505,7 @@ NSString *const WD_UFlickr_StoppedState = @"WD_UFlickr_StoppedState";
 }
 
 - (void)resetState{
-    
+
     [self resetStateCall];
 }
 

@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "WDFlickrController.h"
 #import "WDFlickrFactory.h"
+
 #define DDLogInfo NSLog
 #define DDLogDebug NSLog
 #define DDLogWarn NSLog
@@ -31,6 +32,10 @@ extern NSString *const WD_UFlickr_StoppedState;
 @class WDFlickrPhotoUploader, WDFlickrController, SMStateMachineAsync;
 
 #pragma mark - FlickrUploadTask
+extern NSString *const WD_FlickrTaskInitState;
+extern NSString *const WD_FlickrTaskInProgressState;
+extern NSString *const WD_FlickrTaskFinishedState;
+extern NSString *const WD_FlickrTaskErrorState;
 
 @interface WDFlickrUploadTask : NSObject
 
@@ -62,10 +67,12 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
 
 - (void)allTasksFinishedSender:(WDFlickrPhotoUploader *)aSender;
 
+- (void)uploaderStopped:(WDFlickrPhotoUploader *)aSender;
 
 @end
 
 #pragma mark - WDFlickrPhotoUploaderDataSource
+
 @protocol WDFlickrPhotoUploaderDataSource <NSObject>
 
 @required

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface WDDataUtils : NSObject
+
 #pragma mark - mime
+
 + (NSString *)mimeTypeForFile:(NSString *)aFilePath;
 @end

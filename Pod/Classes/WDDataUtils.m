@@ -11,6 +11,7 @@
 @implementation WDDataUtils
 
 #pragma mark - mime
+
 + (NSString *)mimeTypeForFile:(NSString *)aFilePath{
 
     NSString *filePath = aFilePath;

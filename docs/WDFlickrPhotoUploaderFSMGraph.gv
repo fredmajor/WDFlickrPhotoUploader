@@ -13,10 +13,10 @@ isTaskNil[shape=diamond];
 GetNextTask -> isTaskNil[label="C(checkTask)"];
 Finished [shape=doubleoctagon,label="Finished\n---\ndelegate(finishedAll)"];
 Finished -> Init [style=dotted, label="C(resetState)"]
-Error[shape=doubleoctagon, label="Error\n----\ndelegate(error)"]
+Error[shape=doubleoctagon, label="Error\n----\ndelegate(error)\nmark job in error"]
 Error -> Init [style=dotted, label="C(resetState)"]
 isTaskNil -> Finished[label="Y"];
-isTaskNil -> UploadImage[label="N,\ndelegate(photoUploadStarted),\nuploadErrorCounter=0\nstart data upload stopwatch"];
+isTaskNil -> UploadImage[label="N,\ndelegate(photoUploadStarted),\nuploadErrorCounter=0\nstart data upload stopwatch\nmark job inProgress"];
 
 UploadImage -> UploadImage[label="delegate(progress)"];
 UploadImage -> UploadImage[label="if(error){repeat X times;\nuploadErrorCounter++}", style=dotted];
@@ -40,15 +40,15 @@ CreatePhotoset -> createPhotosetSuccessfulDecision[label="C(checkPhotosetCreatio
 CreatePhotoset -> CreatePhotoset[label="error, repeat X times", style=dotted];
 createPhotosetSuccessfulDecision -> Error[label="N,\nerrorMsg=create photoset error", style=dotted];
 //createPhotosetSuccessfulDecision -> AssignPhoto[label="Y"]
-createPhotosetSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)"]
+createPhotosetSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)\nmark job finished"]
 
 assignPhotoSuccessfulDecision[shape="diamond"]
 AssignPhoto -> AssignPhoto[label="error, repeat X times", style=dotted];
 AssignPhoto -> assignPhotoSuccessfulDecision[label="C(checkAssignmentSuccessful)"]
 assignPhotoSuccessfulDecision -> Error[label="N,\nerrorMsg=assign photo error", style="dotted"]
-assignPhotoSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)"]
+assignPhotoSuccessfulDecision -> stopRequested[label="Y\ndelegate(photoUploadCompleted)\nmark job finished"]
 
-Stopped[shape=doubleoctagon]
+Stopped[shape=doubleoctagon, label="Stopped\ndelegate(stopped)"]
 Stopped -> Init [style=dotted, label="C(resetState)"]
 stopRequested[shape="diamond"]
 stopRequested -> GetNextTask[label="N"]
