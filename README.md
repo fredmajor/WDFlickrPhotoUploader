@@ -30,6 +30,7 @@ Now you are ready to build an example app and play with it. Sign in (the browser
 Entire Example app is contained inside the AppDelegate class.
 ### API
 Basic steps to use the pod in your code:
+
 1. Configure the apiKey and apiSecret, as in the example app
 2. Your client class needs to implement the WDFlickrPhotoUploaderDataSource protocol. For an example of implementation see the demo app.
 3. The uploader will carry on uploading as long as you return WDFlickrUploadTask object from the `- (WDFlickrUploadTask *)nextTask` method. Once you return nil - the Uploader will go to the Finished state.
