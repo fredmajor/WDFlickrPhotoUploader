@@ -214,6 +214,12 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     self.allDoneTb.hidden = NO;
 }
 
+- (void)uploaderStopped:(WDFlickrPhotoUploader *)aSender{
+
+    self.uploaderInSomeFinalState = YES;
+    self.uploadInProgress = NO;
+    self.progressBar.doubleValue = 0;
+}
 
 #pragma mark - SMMonitorNSLogDelegate
 
@@ -230,12 +236,6 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     }
 }
 
-- (void)uploaderStopped:(WDFlickrPhotoUploader *)aSender{
-
-    self.uploaderInSomeFinalState = YES;
-    self.uploadInProgress = NO;
-    self.progressBar.doubleValue = 0;
-}
 
 #pragma mark - Helpers
 
