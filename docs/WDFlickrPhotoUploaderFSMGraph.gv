@@ -1,6 +1,5 @@
 digraph FlickrControllerLogin {
-//rankdir=LR;
-size="8";
+size="16";
 
 Init [shape=doublecircle];
 isLoggedIn[shape="diamond"];
