@@ -49,10 +49,10 @@ Below attached are state diagrams for both automata. The second one is way more 
 The uploader features simple error handling and it will repeat a couple of times before failing.
 
 Primitive and simplified state diagram for WDFlickrController:
-![](http://raw.githubusercontent.com/fredmajor/WDFlickrPhotoUploader/master/docs/WDFlickrControllerFSMGraph.gif)
+![](https://raw.githubusercontent.com/fredmajor/WDFlickrPhotoUploader/master/docs/WDFlickrControllerFSMGraph.gif)
 
 Pretty nice state diagram for WDFlickrUploader:
-![](http://raw.githubusercontent.com/fredmajor/WDFlickrPhotoUploader/master/docs/WDFlickrPhotoUploaderFSMGraph.gif)
+![](https://raw.githubusercontent.com/fredmajor/WDFlickrPhotoUploader/master/docs/WDFlickrPhotoUploaderFSMGraph.gif)
 
 
 ## Installation
