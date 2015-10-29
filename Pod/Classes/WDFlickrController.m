@@ -1,5 +1,4 @@
 #import "WDFlickrController.h"
-#import "WDDataUtils.h"
 
 /*local constants*/
 static const NSString *WD_Flickr_buddyUrlBase = @"https://flickr.com/buddyicons/";
@@ -13,6 +12,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
 @interface WDFlickrController ()
 
 - (void)WD_PostNotificationOnMainThread:(NSString *)aNotification userInfo:(NSDictionary *)aUserInfo;
++ (NSString *)mimeTypeForFile:(NSString *)aFilePath;
 @end
 
 @implementation WDFlickrController{
@@ -246,7 +246,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
         [self WD_changeState:WD_Flickr_PhotoUploadState withDescription:@"photo upload starts up"];
         [_flickrAPIRequest uploadImageStream:[NSInputStream inputStreamWithURL:aImageUrl]
                            suggestedFilename:aFilename
-                           MIMEType:[WDDataUtils mimeTypeForFile:[aImageUrl path]]
+                           MIMEType:[WDFlickrController mimeTypeForFile:[aImageUrl path]]
                            arguments:aOptions];
         currentImageUpload = aImageUrl;
         DDLogInfo(@"Ordered upload of:%@", aImageUrl);
@@ -695,5 +695,17 @@ didObtainOAuthAccessToken:(NSString *)inAccessToken
             return @"unknown state";
     }
 }
+
++ (NSString *)mimeTypeForFile:(NSString *)aFilePath{
+    
+    NSString *filePath = aFilePath;
+    CFStringRef fileExtension = (__bridge CFStringRef) [filePath pathExtension];
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, fileExtension, NULL);
+    CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass(UTI, kUTTagClassMIMEType);
+    CFRelease(UTI);
+    NSString *MIMETypeString = (__bridge_transfer NSString *) MIMEType;
+    return MIMETypeString;
+}
+
 
 @end

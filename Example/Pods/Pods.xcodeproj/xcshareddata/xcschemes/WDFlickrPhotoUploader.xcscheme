@@ -13,11 +13,11 @@
             buildForProfiling = "YES"
             buildForArchiving = "YES">
             <BuildableReference
-               BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '4E49E11552C25A3ABD88C02D'
-               BlueprintName = 'WDFlickrPhotoUploader'
-               ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'WDFlickrPhotoUploader.framework'>
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F8823EA2B1FB06663BE5C62CC9FB7D25"
+               BlueprintName = "WDFlickrPhotoUploader"
+               ReferencedContainer = "container:Pods.xcodeproj"
+               BuildableName = "WDFlickrPhotoUploader.framework">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

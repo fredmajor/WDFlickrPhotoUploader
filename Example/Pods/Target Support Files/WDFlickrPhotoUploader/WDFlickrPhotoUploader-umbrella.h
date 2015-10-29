@@ -12,7 +12,6 @@
 #import "SMStateMachineAsync.h"
 #import "SMStateMachineExecuteContext.h"
 #import "SMTransition.h"
-#import "WDDataUtils.h"
 #import "WDFlickrController.h"
 #import "WDFlickrFactory.h"
 #import "WDFlickrPhotoUploader.h"

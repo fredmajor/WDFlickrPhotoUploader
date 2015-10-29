@@ -205,11 +205,9 @@
 		BE7C467701B8EDE8E1232C0309F8EB66 /* NSValue+OCMAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 26C7A1897A42D43F6DDFAABC839AD1E4 /* NSValue+OCMAdditions.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C162E757E35892DE2E455024AACE1652 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA401DC02FA17A5EDC1FCD7DAF94369D /* Foundation.framework */; };
 		C288A237D6436F14252072260E684741 /* OCMockObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 48D410D2AC424A08859D61F6E774969B /* OCMockObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C501433C4FCACD5A78B60F93E8AF667C /* WDDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C44DE43BA7B7D68144DD8D3546DFB319 /* WDDataUtils.m */; };
 		C579631FD85A5AB2C7E667523CA91C84 /* OCMExpectationRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E63988AB7458C44080E7C90A22F4289 /* OCMExpectationRecorder.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w -Xanalyzer -analyzer-disable-all-checks"; }; };
 		C630CA0CEC993B49A36E56250CB16D92 /* EXPMatcherHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 631627F8E5FEC33DD44DD8C50442CAF7 /* EXPMatcherHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C63FF4FA5A2C3ABC8DE0541584746F41 /* SMActionProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = C11AEB948BF021C04F58CE3F42A5DFAE /* SMActionProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C94FE1BD5E1046124508750658E2F633 /* WDDataUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = ACA709DEAB98D61B1DCEBCBCDBBA4FA8 /* WDDataUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCAA292999C3F1C527DBBC511AE43FC4 /* SMNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB1332772D5161C9E6A5BAA3F247956 /* SMNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CDDABD9DABF7F9DFCE3E19D430D80137 /* WDFlickrUploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = AC478F173F30D6D87B2C4CD0F9D0D1A1 /* WDFlickrUploadTask.m */; };
 		CE2229E5A8A68BA52208573B137E1BCD /* EXPMatchers+beFalsy.m in Sources */ = {isa = PBXBuildFile; fileRef = B9173E723B9753A2A93021951057AA03 /* EXPMatchers+beFalsy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -499,7 +497,6 @@
 		AC417CE3CFA981BC9CB360F9CD5E649D /* Pods-WDFlickrPhotoUploader_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-WDFlickrPhotoUploader_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		AC478F173F30D6D87B2C4CD0F9D0D1A1 /* WDFlickrUploadTask.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = WDFlickrUploadTask.m; sourceTree = "<group>"; };
 		AC6C4B2EAF656ADBE1BD19137AA0EE02 /* OCObserverMockObject.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OCObserverMockObject.h; path = Source/OCMock/OCObserverMockObject.h; sourceTree = "<group>"; };
-		ACA709DEAB98D61B1DCEBCBCDBBA4FA8 /* WDDataUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = WDDataUtils.h; sourceTree = "<group>"; };
 		AE739DD975BA76E2536D897B50245D63 /* EXPMatchers+match.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+match.m"; path = "Expecta/Matchers/EXPMatchers+match.m"; sourceTree = "<group>"; };
 		AED49EE10B3D5007A9D2C0D197F70A30 /* EXPMatchers+respondTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+respondTo.m"; path = "Expecta/Matchers/EXPMatchers+respondTo.m"; sourceTree = "<group>"; };
 		B1A679569E270CC196B07DA181C0C533 /* EXPDoubleTuple.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPDoubleTuple.h; path = Expecta/EXPDoubleTuple.h; sourceTree = "<group>"; };
@@ -534,7 +531,6 @@
 		C3845698996C2FDADE61A0595E8CE96E /* NSObject+OCMAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+OCMAdditions.h"; path = "Source/OCMock/NSObject+OCMAdditions.h"; sourceTree = "<group>"; };
 		C4079C1939777165833F25B33B45C508 /* Pods-WDFlickrPhotoUploader_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WDFlickrPhotoUploader_Tests-resources.sh"; sourceTree = "<group>"; };
 		C4237D1D125BE82BC5231A761F2CDAE7 /* Specta-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Specta-dummy.m"; sourceTree = "<group>"; };
-		C44DE43BA7B7D68144DD8D3546DFB319 /* WDDataUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = WDDataUtils.m; sourceTree = "<group>"; };
 		C5F8C0AC3271A260BFC3903AEDECBD7C /* Pods-WDFlickrPhotoUploader_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-WDFlickrPhotoUploader_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		C699E14AC9D3EB294D109099997B9927 /* Pods-Example_for_WDFlickrPhotoUploader-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Example_for_WDFlickrPhotoUploader-acknowledgements.plist"; sourceTree = "<group>"; };
 		C6D8B5C12189AECBAFD27A419A309746 /* EXPMatchers+beCloseTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beCloseTo.m"; path = "Expecta/Matchers/EXPMatchers+beCloseTo.m"; sourceTree = "<group>"; };
@@ -1111,8 +1107,6 @@
 		EF48A41257F4649B562466AFC4ADB22D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				ACA709DEAB98D61B1DCEBCBCDBBA4FA8 /* WDDataUtils.h */,
-				C44DE43BA7B7D68144DD8D3546DFB319 /* WDDataUtils.m */,
 				BB9C05AF1AAC47B4312A44CECE0D516A /* WDFlickrController.h */,
 				55A3F48C449C3A0F673A950808BA6D35 /* WDFlickrController.m */,
 				7255DEA90E01F230FD3D09E5A912AD58 /* WDFlickrFactory.h */,
@@ -1234,7 +1228,6 @@
 				2370D15D199108E9F2E45DC84226B5D6 /* SMStateMachineAsync.h in Headers */,
 				A002127AEC905FE3AA6D0A6CAB261834 /* SMStateMachineExecuteContext.h in Headers */,
 				E20EF476D21605707B6CCD6C3F2CB6FE /* SMTransition.h in Headers */,
-				C94FE1BD5E1046124508750658E2F633 /* WDDataUtils.h in Headers */,
 				3F98E8B5BADDCA7A439B28462574DBF5 /* WDFlickrController.h in Headers */,
 				522FF131F3B2608AB8AFD7DFD9585364 /* WDFlickrFactory.h in Headers */,
 				B3B287FDB195A03CE4BC23DC1A8C5DC1 /* WDFlickrPhotoUploader-umbrella.h in Headers */,
@@ -1616,7 +1609,6 @@
 				2902F4E031D7D11C080925FDB8654795 /* SMStateMachineAsync.m in Sources */,
 				D18F608C822506FAAA79D6C4D629C88B /* SMStateMachineExecuteContext.m in Sources */,
 				16D54A57DB3800C541C59BECB3F816CB /* SMTransition.m in Sources */,
-				C501433C4FCACD5A78B60F93E8AF667C /* WDDataUtils.m in Sources */,
 				3E3F33A97BB11CB257060686898C70B6 /* WDFlickrController.m in Sources */,
 				A5B880BB67A5A855296DAC5A8E78ED65 /* WDFlickrFactory.m in Sources */,
 				2B9842C32F3113601E84773CCB7AA64A /* WDFlickrPhotoUploader-dummy.m in Sources */,

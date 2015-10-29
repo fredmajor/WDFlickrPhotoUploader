@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "WDFlickrPhotoUploader"
-  s.version          = "0.1.0"
+  s.version          = "0.1.1"
   s.summary          = "A small library to upload a bunch of files to Flickr."
   s.description      = <<-DESC
 This library is a high level abstration for uploading files to Flickr. Implemented using state machines.
