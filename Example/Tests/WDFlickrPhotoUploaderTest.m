@@ -549,7 +549,7 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     expect(delegateErrorCalled).will.equal(YES);
 }
 
-- (void)testThatCreatePhotosetGoesToAssignPhotoOnSuccess{
+- (void)testThatCreatePhotosetGoesToIsStopRequestedOnSuccess{
     /*
      *given
      */
@@ -587,7 +587,7 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     /*
      *test
      */
-    expect([self didVisitState:WD_UFlickr_AssignPhotoState]).will.equal(YES);
+    expect([self didVisitState:WD_UFlickr_StopRequestedDecision]).will.equal(YES);
 }
 
 - (void)testThatAssignPhotoRepeatsOnError{
@@ -605,20 +605,12 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
         [eut photoUploadSucceeded:nil photoURL:nil photoId:nil];
     });
 
-    //photoset doesn't exist
-    [[[[mockedController stub]
-            andReturn:nil]
-            ignoringNonObjectArgs]
-            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
-
-    //photoset created just fine
+    //photoset does exist
     [[[[mockedController stub]
             andReturn:@"lol"]
             ignoringNonObjectArgs]
-            createPhotoset:[OCMArg any]
-            primaryPhotoId:[OCMArg any]
-            timeout:0
-            error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
+            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
+
 
     //fake error on assign photo
     __block NSUInteger callCounter = 0;
@@ -646,7 +638,7 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
     expect(callCounter).will.equal(WD_UFlickr_assignPhotoRetryLimit);
 }
 
-- (void)testThatAssignPhotoCallController{
+- (void)testThatAssignPhotoCallsController{
     /*
      *given
      */
@@ -660,20 +652,11 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
         [eut photoUploadSucceeded:nil photoURL:nil photoId:nil];
     });
 
-    //photoset doesn't exist
-    [[[[mockedController stub]
-            andReturn:nil]
-            ignoringNonObjectArgs]
-            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
-
-    //photoset created just fine
+    //photoset does exist
     [[[[mockedController stub]
             andReturn:@"lol"]
             ignoringNonObjectArgs]
-            createPhotoset:[OCMArg any]
-            primaryPhotoId:[OCMArg any]
-            timeout:0
-            error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
+            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
 
     [[[mockedController expect]
             ignoringNonObjectArgs]
@@ -704,20 +687,11 @@ photoUploadFinished:(WDFlickrUploadTask *)aTask
         [eut photoUploadSucceeded:nil photoURL:nil photoId:nil];
     });
 
-    //photoset doesn't exist
-    [[[[mockedController stub]
-            andReturn:nil]
-            ignoringNonObjectArgs]
-            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
-
-    //photoset created just fine
+    //photoset does exist
     [[[[mockedController stub]
             andReturn:@"lol"]
             ignoringNonObjectArgs]
-            createPhotoset:[OCMArg any]
-            primaryPhotoId:[OCMArg any]
-            timeout:0
-            error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
+            checkIfPhotosetExists:[OCMArg any] timeout:0 error:(NSError *__autoreleasing *) [OCMArg anyPointer]];
 
     //fake error on assign photo
     [[[[mockedController stub]

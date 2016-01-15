@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		38FF88C8B5DABA13A4A935E4 /* Pods_Example_for_WDFlickrPhotoUploader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9380745A52D6FE7DA132AE0 /* Pods_Example_for_WDFlickrPhotoUploader.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		588C40811BC336DB00F77E7A /* WDFlickrPhotoUploaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 588C40801BC336DB00F77E7A /* WDFlickrPhotoUploaderTest.m */; settings = {ASSET_TAGS = (); }; };
-		588C40841BC3A44900F77E7A /* WDGrandeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 588C40831BC3A44900F77E7A /* WDGrandeTest.m */; settings = {ASSET_TAGS = (); }; };
+		38FF88C8B5DABA13A4A935E4 /* Pods_Example_for_WDFlickrPhotoUploader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9380745A52D6FE7DA132AE0 /* Pods_Example_for_WDFlickrPhotoUploader.framework */; };
+		588C40811BC336DB00F77E7A /* WDFlickrPhotoUploaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 588C40801BC336DB00F77E7A /* WDFlickrPhotoUploaderTest.m */; };
+		588C40841BC3A44900F77E7A /* WDGrandeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 588C40831BC3A44900F77E7A /* WDGrandeTest.m */; };
 		58DB5D121BC1B20800D7B8B7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DB5D111BC1B20800D7B8B7 /* AppDelegate.m */; };
 		58DB5D151BC1B20800D7B8B7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DB5D141BC1B20800D7B8B7 /* main.m */; };
 		58DB5D171BC1B20800D7B8B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58DB5D161BC1B20800D7B8B7 /* Assets.xcassets */; };
@@ -17,7 +17,7 @@
 		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		81FBE778166D54730DEDBD1A /* Pods_WDFlickrPhotoUploader_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9420A5DBB415C9A3BD9E983A /* Pods_WDFlickrPhotoUploader_Tests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		81FBE778166D54730DEDBD1A /* Pods_WDFlickrPhotoUploader_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9420A5DBB415C9A3BD9E983A /* Pods_WDFlickrPhotoUploader_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
