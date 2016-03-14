@@ -194,7 +194,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
         }
         retval = loginTestResult;
         if( retval ){
-            [self WD_changeState:WD_Flickr_LoggedInState withDescription:@"login test ok"];
+            [self autoChangeStateToLoggedIn];
         }else{
             [self WD_changeState:WD_Flickr_InitState withDescription:@"login test failed"];
         }
@@ -278,8 +278,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
             }
         }else{
             /*timeout*/
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"going back to logged in after photoset change"];
+            [self autoChangeStateToLoggedIn];
             result = nil;
             *aError = [NSError errorWithDomain:@"FlickrError"
                                code:3
@@ -325,8 +324,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
             }
         }else{
             /*timeout*/
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"back to logged in after create photoset timeout"];
+            [self autoChangeStateToLoggedIn];
             *aError = [NSError errorWithDomain:@"FlickrError"
                                code:3
                                userInfo:@{@"reason" : @"timeout. try again."}];
@@ -370,8 +368,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
             }
         }else{
             /*timeout*/
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"back to loggedIn after assign photo timeout"];
+            [self autoChangeStateToLoggedIn];
             *aError = [NSError errorWithDomain:@"FlickrError"
                                code:3
                                userInfo:@{@"reason" : @"timeout. try again."}];
@@ -423,7 +420,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
     switch(_controllerState){
         case WD_Flickr_TestingLoginState:{
             DDLogInfo(@"test response arrived. You are logged in properly");
-            [self WD_changeState:WD_Flickr_LoggedInState withDescription:@"login test ok"];
+            [self autoChangeStateToLoggedIn];
             @synchronized(self){
                 loginTestResult = YES;
                 loginTestResponseArrived = YES;
@@ -440,7 +437,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
                           [_delegate photoUploadSucceeded:weakSelf photoURL:currentImageUpload photoId:photoId];
                       }];
             }
-            [self WD_changeState:WD_Flickr_LoggedInState withDescription:@"upload completed"];
+            [self autoChangeStateToLoggedIn];
         }
             break;
 
@@ -456,8 +453,7 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
             }
             photosetCheckComplete = YES;
             photosetCheckError = NO;
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"going back to logged in after photoset change"];
+            [self autoChangeStateToLoggedIn];
         }
             break;
 
@@ -466,16 +462,14 @@ NSString *const WD_Flickr_StateChanged = @"WD_Flickr_StateChanged";
             createPhotosetResult = inResponseDictionary[@"photoset"][@"id"];
             createPhotosetComplete = YES;
             createPhotosetError = NO;
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"going back to loggedIn state after creating a photoset"];
+            [self autoChangeStateToLoggedIn];
         }
             break;
         case WD_Flickr_AssignPhoto:{
             DDLogInfo(@"Assign photo completed.");
             assignPhotoError = NO;
             assignPhotoComplete = YES;
-            [self WD_changeState:WD_Flickr_LoggedInState
-                  withDescription:@"back to LoggedIn after assigning a photo"];
+            [self autoChangeStateToLoggedIn];
         }
             break;
         default:
@@ -583,20 +577,40 @@ didObtainOAuthAccessToken:(NSString *)inAccessToken
                  userNSID:(NSString *)inNSID{
 
     if( _controllerState == WD_Flickr_fetchingOauthAccessTokenState ){
+        [loginTimer invalidate];
+        loginTimer = nil;
         _username = inUserName;
         _nsid = inNSID;
         self.flickrAPIContext.OAuthToken = inAccessToken;
         self.flickrAPIContext.OAuthTokenSecret = inSecret;
         self.flickrAPIRequest.sessionInfo = nil;
-        [loginTimer invalidate];
-        loginTimer = nil;
-        NSDictionary *userInfo = @{
-                @"username" : inUserName, @"accessToken" : inAccessToken, @"secret" : inSecret, @"nsid" : inNSID
-        };
-        [self WD_changeState:WD_Flickr_LoggedInState withDescription:@"login succeded" optionalInfo:userInfo];
+        [self changeStateToLoggedIn:_username accessToken:self.flickrAPIContext.OAuthToken secret:self.flickrAPIContext.OAuthTokenSecret nsid:_nsid];
     }else{
         DDLogWarn(@"access token arrived but controller in wrong state");
     }
+}
+
+- (void)autoChangeStateToLoggedIn{
+
+    [self changeStateToLoggedIn:_username
+          accessToken:self.flickrAPIContext.OAuthToken
+          secret:self.flickrAPIContext.OAuthTokenSecret
+          nsid:_nsid];
+}
+
+- (void)changeStateToLoggedIn:(NSString *)aUsername
+                  accessToken:(NSString *)aAccessToken
+                       secret:(NSString *)aSecret
+                         nsid:(NSString *)aNsid {
+    NSDictionary *userInfo = @{
+                               @"username" : aUsername,
+                               @"accessToken" : aAccessToken,
+                               @"secret" : aSecret,
+                               @"nsid" : aNsid
+                               };
+    [self WD_changeState:WD_Flickr_LoggedInState
+         withDescription:@"logged in"
+            optionalInfo:userInfo];
 }
 
 #pragma mark - Helpers
